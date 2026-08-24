@@ -58,6 +58,12 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
+      - name: Decode Android keystore
+        run: echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 -d > android/upload-keystore.jks
+
+      - name: Write key.properties
+        run: echo "${{ secrets.ANDROID_KEY_PROPERTIES }}" > android/key.properties
+
       - name: Build APK (staging flavor)
         run: flutter build apk --flavor staging -t lib/main_staging.dart --release
 
