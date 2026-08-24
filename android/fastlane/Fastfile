@@ -1,0 +1,21 @@
+default_platform(:android)
+
+platform :android do
+  desc "Build a signed release APK (staging flavor)"
+  lane :build_staging do
+    gradle(
+      task: "assemble",
+      flavor: "staging",
+      build_type: "Release"
+    )
+  end
+
+  desc "Build a signed release APK (prod flavor)"
+  lane :build_prod do
+    gradle(
+      task: "assemble",
+      flavor: "prod",
+      build_type: "Release"
+    )
+  end
+end
