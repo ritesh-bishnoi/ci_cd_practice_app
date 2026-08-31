@@ -18,4 +18,20 @@ platform :android do
       build_type: "Release"
     )
   end
+
+  desc "Build staging APK and distribute via Firebase App Distribution"
+  lane :distribute_staging do
+    gradle(
+      task: "assemble",
+      flavor: "staging",
+      build_type: "Release"
+    )
+    firebase_app_distribution(
+      app: ENV['FIREBASE_ANDROID_APP_ID'],
+      groups: "internal-testers",
+      release_notes: "Automated staging build via Fastlane",
+      apk_path: "../build/app/outputs/flutter-apk/app-staging-release.apk",
+      firebase_cli_token: ENV['FIREBASE_TOKEN']
+    )
+  end
 end
