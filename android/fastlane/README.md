@@ -39,6 +39,14 @@ Build a signed release APK (prod flavor)
 
 Build staging APK and distribute via Firebase App Distribution
 
+### android distribute_prod
+
+```sh
+[bundle exec] fastlane android distribute_prod
+```
+
+Build prod APK and distribute via Firebase App Distribution
+
 ----
 
 This README.md is auto-generated and will be re-generated every time [_fastlane_](https://fastlane.tools) is run.

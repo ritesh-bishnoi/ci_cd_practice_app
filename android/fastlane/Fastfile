@@ -34,4 +34,20 @@ platform :android do
       firebase_cli_token: ENV['FIREBASE_TOKEN']
     )
   end
+
+  desc "Build prod APK and distribute via Firebase App Distribution"
+  lane :distribute_prod do
+    gradle(
+      task: "assemble",
+      flavor: "prod",
+      build_type: "Release"
+    )
+    firebase_app_distribution(
+      app: ENV['FIREBASE_PROD_APP_ID'],
+      groups: "internal-testers",
+      release_notes: "Release build from tag #{ENV['GITHUB_REF_NAME']}",
+      apk_path: "../build/app/outputs/flutter-apk/app-prod-release.apk",
+      firebase_cli_token: ENV['FIREBASE_TOKEN']
+    )
+  end
 end
