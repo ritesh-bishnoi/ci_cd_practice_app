@@ -1,0 +1,53 @@
+default_platform(:android)
+
+platform :android do
+  desc "Build a signed release APK (staging flavor)"
+  lane :build_staging do
+    gradle(
+      task: "assemble",
+      flavor: "staging",
+      build_type: "Release"
+    )
+  end
+
+  desc "Build a signed release APK (prod flavor)"
+  lane :build_prod do
+    gradle(
+      task: "assemble",
+      flavor: "prod",
+      build_type: "Release"
+    )
+  end
+
+  desc "Build staging APK and distribute via Firebase App Distribution"
+  lane :distribute_staging do
+    gradle(
+      task: "assemble",
+      flavor: "staging",
+      build_type: "Release"
+    )
+    firebase_app_distribution(
+      app: ENV['FIREBASE_ANDROID_APP_ID'],
+      groups: "internal-testers",
+      release_notes: "Automated staging build via Fastlane",
+      apk_path: "../build/app/outputs/flutter-apk/app-staging-release.apk",
+      firebase_cli_token: ENV['FIREBASE_TOKEN']
+    )
+  end
+
+  desc "Build prod APK and distribute via Firebase App Distribution"
+  lane :distribute_prod do
+    gradle(
+      task: "assemble",
+      flavor: "prod",
+      build_type: "Release"
+    )
+    firebase_app_distribution(
+      app: ENV['FIREBASE_PROD_APP_ID'],
+      groups: "internal-testers",
+      release_notes: "Release build from tag #{ENV['GITHUB_REF_NAME']}",
+      apk_path: "../build/app/outputs/flutter-apk/app-prod-release.apk",
+      firebase_cli_token: ENV['FIREBASE_TOKEN']
+    )
+  end
+end
