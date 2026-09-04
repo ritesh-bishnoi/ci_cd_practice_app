@@ -43,3 +43,4 @@ jobs:
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
           FIREBASE_PROD_APP_ID: ${{ secrets.FIREBASE_PROD_APP_ID }}
+          GITHUB_RUN_NUMBER: ${{ github.run_number }}

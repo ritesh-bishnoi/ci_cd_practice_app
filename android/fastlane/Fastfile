@@ -1,6 +1,12 @@
 default_platform(:android)
 
 platform :android do
+  desc "Bump build number based on GitHub run number"
+  lane :bump_build_number do
+    version_code = ENV['GITHUB_RUN_NUMBER'] || '1'
+    sh("cd .. && sed -i.bak -E 's/^version: (.+)\\+[0-9]+/version: \\1+#{version_code}/' pubspec.yaml")
+  end
+  
   desc "Build a signed release APK (staging flavor)"
   lane :build_staging do
     gradle(
@@ -37,6 +43,7 @@ platform :android do
 
   desc "Build prod APK and distribute via Firebase App Distribution"
   lane :distribute_prod do
+    bump_build_number
     gradle(
       task: "assemble",
       flavor: "prod",
