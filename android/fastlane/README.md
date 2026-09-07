@@ -15,6 +15,14 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 
 ## Android
 
+### android bump_build_number
+
+```sh
+[bundle exec] fastlane android bump_build_number
+```
+
+Bump build number based on GitHub run number
+
 ### android build_staging
 
 ```sh
