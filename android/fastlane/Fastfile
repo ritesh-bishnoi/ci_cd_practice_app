@@ -4,7 +4,11 @@ platform :android do
   desc "Bump build number based on GitHub run number"
   lane :bump_build_number do
     version_code = ENV['GITHUB_RUN_NUMBER'] || '1'
-    sh("cd .. && sed -i.bak -E 's/^version: (.+)\\+[0-9]+/version: \\1+#{version_code}/' pubspec.yaml")
+    pubspec_path = File.expand_path('../../pubspec.yaml', __dir__)
+    content = File.read(pubspec_path)
+    updated = content.sub(/^version: (.+)\+\d+/, "version: \\1+#{version_code}")
+    File.write(pubspec_path, updated)
+    UI.message("Bumped build number to #{version_code}")
   end
   
   desc "Build a signed release APK (staging flavor)"
